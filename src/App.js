@@ -8,38 +8,25 @@ function App() {
   // Efectos: consumir datos de una API
   useEffect ( () => {
     async function fechData() {
-      const tasks=[	
-        { 
-          "label": "Esta es mi Vigesima cuarta Tarea", 
-          "done": false 
-        },
-        { 
-          "label": "Esta es mi Vigesina quinta Tarea", 
-          "done": false 
-        },
-        { 
-          "label": "Esta es mi Vigesima sexta Tarea", 
-          "done": false 
-        }
-      ]
-
       const additionalSetting = {
         headers: {
           "Content-Type": "application/json"
         },
-        method: "PUT",
-          body: JSON.stringify(tasks)
+        method: "GET",
+          //body: JSON.stringify(tasks)
       }
 
-      // JSON a Text = JSON.stringify() // Text a JSON = JSON.parse()
+      
       fetch(
         "https://assets.breatheco.de/apis/fake/todos/user/alejojimenez",
         additionalSetting )
         .then(response => response.text() )
         .then(newResponse => {
           console.log(newResponse);
-          setTaskList(JSON.stringify(newResponse))
-          console.log(setTaskList(JSON.stringify(newResponse)))
+          
+          // JSON a Text = JSON.stringify() // Text a JSON = JSON.parse()
+          setTaskList(JSON.parse(newResponse))
+          console.log(setTaskList(JSON.parse(newResponse)))
         })
         .catch((error) => console.log(error));
     }
@@ -50,6 +37,14 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>To Do List Using Fetch</h1>
+        <ul style={{fontSize:16, textAlign:'left'}}>
+          {taskList.map((item, index) => (
+            <li key={index} style={{listStyle:'none'}}>
+              <h3>{item.label}</h3>
+              <span>{item.done.toString()}</span>
+            </li>
+          ))}
+        </ul>        
       </header>
     </div>
   );
